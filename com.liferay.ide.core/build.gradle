@@ -1,0 +1,13 @@
+apply plugin: eclipsebuild.BundlePlugin
+
+dependencies {
+	compile fileTree(dir: "lib", include: "*.jar")
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs 'src/main/java','src-external/'
+		}
+	}
+}

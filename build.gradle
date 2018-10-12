@@ -1,0 +1,178 @@
+import eclipsebuild.*
+
+import java.util.regex.Pattern
+
+buildscript {
+	dependencies {
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.source.formatter", version: "latest.release"
+	}
+
+	repositories {
+		maven {
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+		}
+		maven {
+			url "https://oss.sonatype.org/content/repositories/snapshots/"
+		}
+	}
+}
+
+apply plugin: "com.liferay.source.formatter"
+apply plugin: BuildDefinitionPlugin
+
+// define version mapping for the 3rd-party dependencies that are not specific to a particular Eclipse version
+def eclipseVersionAgnosticDependencies = []
+
+// target platform definition for all major Eclipse releases between version 4.3 and 4.8
+// the default version is 48 which can be overridden through -Peclipse.version=<version>
+// also the target platforms contain 1) the Eclipse SDK 2) the latest junit 3) SWTBot 2.2.1
+eclipseBuild {
+	defaultEclipseVersion = '48'
+
+	final def swtPluginId = "org.eclipse.swt.${ECLIPSE_WS}.${ECLIPSE_OS}.${ECLIPSE_ARCH}"
+
+	targetPlatform {
+		eclipseVersion = '48'
+		targetDefinition = file('tooling-e48.target')
+		versionMapping = [
+			"$swtPluginId": '3.107.0',
+		] + eclipseVersionAgnosticDependencies
+	}
+
+	scmRepo = "https://github.com/liferay/liferay-ide-workspace"
+}
+
+// read the current version from an external file and add a timestamp suffix if requested by the caller
+ext.baseVersion = file('version.txt').text.trim()
+ext.versionQualifier = getVersionQualifier()
+version = baseVersion + '.' + versionQualifier
+
+// ensure that the assembleTargetPlatform is executed when the gradle.properties file is changed
+project.assembleTargetPlatform.inputs.file file('gradle.properties')
+
+formatSource {
+	maxLineLength = 120
+}
+
+subprojects {
+	// set the calculated version on all projects in the hierarchy
+	version = rootProject.version
+
+	plugins.withType(JavaPlugin) {
+		sourceCompatibility = "1.8"
+		targetCompatibility = "1.8"
+
+		tasks.matching {
+			it instanceof JavaCompile || it instanceof GroovyCompile
+		}.all {
+			// enable all warnings except for different sourceCompatibility and targetCompatibility value
+			options.compilerArgs << '-Xlint:all'
+			options.compilerArgs << '-Xlint:-options'
+			options.fork = true
+		}
+	}
+
+	// configure the repositories where the external dependencies can be found
+	repositories {
+		maven {
+			name = 'mavenized-target-platform'
+			url "${Config.on(project).mavenizedTargetPlatformDir}"
+		}
+
+		maven {
+			url project.hasProperty('mavenMirror') ? mavenMirror : 'https://repo.maven.apache.org/maven2/'
+		}
+	}
+}
+
+tasks.withType(DownloadEclipseSdkTask) {
+	def eclipseMirror = 'http://download.eclipse.org'
+
+	if (project.hasProperty('eclipseMirror')) {
+		eclipseMirror = project.property('eclipseMirror')
+	}
+
+	def eclipseUrl = "${eclipseMirror}/eclipse/downloads/drops4/R-4.8-201806110500/"
+	def os = org.gradle.internal.os.OperatingSystem.current()
+	def arch = System.getProperty("os.arch").contains("64") ? "-x86_64" : ""
+
+	if (os.windows) {
+		downloadUrl = "${eclipseUrl}eclipse-SDK-4.8-win32${arch}.zip"
+	}
+	else if (os.macOsX) {
+		downloadUrl = "${eclipseUrl}eclipse-SDK-4.8-macosx-cocoa${arch}.tar.gz"
+	}
+	else if (os.linux) {
+		downloadUrl = "${eclipseUrl}eclipse-SDK-4.8-linux-gtk${arch}.tar.gz"
+	}
+}
+
+task incrementVersion
+task tag
+
+// tag the HEAD of the current branch and push the new tag
+tag {
+	doLast {
+		def tagVersion = file('version.txt').text.trim()
+		exec {
+			commandLine 'git', 'tag', '-a', "REL_$tagVersion", '-m', "Create tag REL_$tagVersion"
+		}
+		exec {
+			commandLine 'git', 'push', '--tags', githubAuthenticatedHost, 'master'
+		}
+	}
+}
+
+// increment the service segment in the version number and push it to master
+incrementVersion {
+	doLast {
+		def oldVersion = file('version.txt').text.trim()
+		def newVersion = ""
+		def matcher = version =~ "^(\\d+)\\.(\\d+).(\\d+)"
+		if (matcher.find()) {
+			def serviceSegment = Integer.parseInt(matcher.group(3)) + 1
+			newVersion = matcher.group(1) + "." + matcher.group(2) + "." + serviceSegment
+			file('version.txt').text = newVersion
+
+			Pattern bundleVersionPattern = Pattern.compile('(?<=Bundle-Version: )\\d+\\.\\d+\\.\\d+(?=\\.qualifier)')
+			file('.').eachFileRecurse { file ->
+				if (file.name == 'MANIFEST.MF') {
+					replacePatternsInFile(file, [(bundleVersionPattern): newVersion])
+				}
+			}
+		}
+		else {
+			throw new IllegalStateException("Unparseable version: $oldVersion.")
+		}
+		exec {
+			commandLine 'git', 'commit', '-a', '-m', "Increment version from $oldVersion to $newVersion"
+		}
+		exec { commandLine 'git', 'push', githubAuthenticatedHost, 'master' }
+	}
+}
+
+void replacePatternsInFile(File file, Map<Pattern, String> patternAndReplacement) {
+	String fileText = file.text
+	patternAndReplacement.each { Pattern pattern, String replacement ->
+		fileText = pattern.matcher(fileText).replaceAll(replacement)
+	}
+
+	file.text = fileText
+}
+
+String getVersionQualifier() {
+	// use full timestamp on CI vs. date-only for local builds
+	if (project.hasProperty('isCI')) {
+		// note that for Eclipse plugin versions, the '-' and '.' character are invalid in front of the build id
+		return new Date().format('yyyyMMddkkmm', TimeZone.getTimeZone('GMT')) + "-$releaseType"
+	}
+	else {
+		return new Date().format('yyyyMMdd', TimeZone.getTimeZone('GMT')) + "-$releaseType"
+	}
+}
+
+repositories {
+	maven {
+		url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+	}
+}
