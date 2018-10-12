@@ -1,0 +1,16 @@
+apply plugin: 'groovy'
+
+dependencies {
+	compile fileTree(dir: "libs", include: ["*.jar"])
+	compile gradleApi()
+	compile group: "bcel", name: "bcel", version: "5.1"
+	compile group: "org.apache.maven", name: "maven-ant-tasks", version: "2.1.3"
+	compile localGroovy()
+}
+
+repositories {
+	maven {
+		url 'https://repo.maven.apache.org/maven2'
+		mavenLocal()
+	}
+}

@@ -1,0 +1,26 @@
+apply plugin: eclipsebuild.UpdateSitePlugin
+
+dependencies {
+	externalPlugin withEclipseBundle("org.eclipse.buildship.core")
+	externalPlugin withEclipseBundle("org.eclipse.buildship.ui")
+	externalPlugin withEclipseBundle("org.eclipse.sapphire.java")
+	externalPlugin withEclipseBundle("org.eclipse.sapphire.java.jdt")
+	externalPlugin withEclipseBundle("org.eclipse.sapphire.modeling.xml")
+	externalPlugin withEclipseBundle("org.eclipse.sapphire.osgi")
+	externalPlugin withEclipseBundle("org.eclipse.sapphire.platform")
+	externalPlugin withEclipseBundle("org.eclipse.sapphire.ui")
+	externalPlugin withEclipseBundle("org.eclipse.sapphire.ui.swt.gef")
+	externalPlugin withEclipseBundle("org.eclipse.sapphire.ui.swt.xml.editor")
+
+	localFeature project(":features:com.liferay.ide.eclipse.tools")
+	localFeature project(":features:com.liferay.ide.hidden")
+
+	localPlugin project(":com.liferay.ide.core")
+	localPlugin project(":com.liferay.ide.service.core")
+	localPlugin project(":com.liferay.ide.service.ui")
+	localPlugin project(":com.liferay.ide.ui")
+}
+
+updateSite {
+	extraResources = files('p2.index')
+}

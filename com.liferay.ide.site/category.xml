@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<category-def label="Liferay IDE Workspace" name="liferay-ide-workspace">
+		<description>
+			Liferay IDE is the official set of Eclipse plug-ins supporting development for the Liferay Portal application platform.
+		</description>
+	</category-def>
+</site>

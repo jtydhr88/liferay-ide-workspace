@@ -1,0 +1,7 @@
+include ':com.liferay.ide.core'
+include ':com.liferay.ide.ui'
+include ':com.liferay.ide.service.core'
+include ':com.liferay.ide.service.ui'
+include ':com.liferay.ide.site'
+include ':features:com.liferay.ide.eclipse.tools'
+include ':features:com.liferay.ide.hidden'
