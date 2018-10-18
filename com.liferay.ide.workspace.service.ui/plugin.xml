@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+
+<plugin>
+	<extension
+		point="org.eclipse.ui.editors"
+	>
+		<editor
+			contributorClass="com.liferay.ide.workspace.service.ui.editor.ServiceBuilderEditorActionBarContributor"
+			default="true"
+			filenames="service.xml"
+			icon="icons/e16/service.png"
+			id="com.liferay.ide.workspace.service.ui.editor.servicebuilder"
+			name="%service.editor.name"
+			symbolicFontName="org.eclipse.wst.sse.ui.textfont"
+		>
+			<class class="com.liferay.ide.workspace.service.ui.editor.ServiceBuilderEditor">
+				<parameter name="sdef" value="com.liferay.ide.workspace.service.ui.editor.ServiceBuilderEditor" />
+				<parameter name="pageName" value="Overview" />
+			</class>
+			<contentTypeBinding
+				contentTypeId="com.liferay.ide.workspace.service.core.servicebuildercontent"
+			>
+			</contentTypeBinding>
+		</editor>
+	</extension>
+</plugin>

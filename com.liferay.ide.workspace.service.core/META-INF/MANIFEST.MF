@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundle.name
+Bundle-SymbolicName: com.liferay.ide.workspace.service.core;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-Activator: com.liferay.ide.workspace.service.core.ServiceCore
+Bundle-Vendor: %bundle.vendor
+Require-Bundle: com.liferay.ide.workspace.core,
+ org.eclipse.jdt.core,
+ org.eclipse.jst.j2ee,
+ org.eclipse.sapphire.modeling.xml,
+ org.eclipse.sapphire.platform
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: com.liferay.ide.workspace.service.core,
+ com.liferay.ide.workspace.service.core.model

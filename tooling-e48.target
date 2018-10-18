@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+<target name="Liferay IDE Workspace Photon Target Platform" sequenceNumber="1">
+	<locations>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<unit id="org.eclipse.sapphire.sdk.feature.group" version="9.1.1.201712191343"/>
+			<unit id="org.eclipse.sapphire.ui.swt.gef.feature.group" version="9.1.1.201712191343"/>
+			<repository location="${eclipseMirror}/sapphire/9.1.1/repository/"/>
+		</location>
+	</locations>
+	<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<launcherArgs>
+		<vmArgs>-XX:MaxPermSize=256M</vmArgs>
+	</launcherArgs>
+</target>

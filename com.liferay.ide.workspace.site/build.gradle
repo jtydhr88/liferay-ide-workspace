@@ -1,0 +1,19 @@
+apply plugin: eclipsebuild.UpdateSitePlugin
+
+dependencies {
+	externalPlugin withEclipseBundle("org.eclipse.sapphire.modeling.xml")
+	externalPlugin withEclipseBundle("org.eclipse.sapphire.ui")
+	externalPlugin withEclipseBundle("org.eclipse.sapphire.ui.swt.xml.editor")
+
+	localFeature project(":features:com.liferay.ide.workspace.eclipse.tools")
+	localFeature project(":features:com.liferay.ide.workspace.hidden")
+
+	localPlugin project(":com.liferay.ide.workspace.core")
+	localPlugin project(":com.liferay.ide.workspace.service.core")
+	localPlugin project(":com.liferay.ide.workspace.service.ui")
+	localPlugin project(":com.liferay.ide.workspace.ui")
+}
+
+updateSite {
+	extraResources = files('p2.index')
+}
