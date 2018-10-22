@@ -49,6 +49,7 @@ import org.w3c.dom.NodeList;
  * @author Cindy Li
  * @author Kuo Zhang
  */
+@SuppressWarnings("restriction")
 public abstract class LiferayDescriptorHelper {
 
 	public static String getDescriptorVersion(IProject project) {

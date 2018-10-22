@@ -13,5 +13,4 @@ Require-Bundle: com.liferay.ide.workspace.core;visibility:=reexport,
  org.eclipse.jface.text
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: com.liferay.ide.workspace.ui,
- com.liferay.ide.workspace.ui.util
+Export-Package: com.liferay.ide.workspace.ui

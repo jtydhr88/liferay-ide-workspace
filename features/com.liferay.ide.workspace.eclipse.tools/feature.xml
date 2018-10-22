@@ -1,48 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-	id="com.liferay.ide.workspace.eclipse.tools"
-	label="Liferay IDE Workspace"
+	id="com.liferay.ide.workspace"
+	label="%featureName"
 	plugin="com.liferay.ide.workspace.ui"
-	provider-name="Liferay, Inc."
+	provider-name="%providerName"
 	version="${version}"
 >
 
 	<description url="http://www.liferay.com/community/liferay-projects/liferay-ide/overview">
-	  Liferay IDE Workspace is the official set of Eclipse plugins for supporting Liferay Portal development platform.
+	  %description
 	</description>
 
 	<copyright url="http://www.liferay.com/products/liferay-portal/lgpl">
-	  /**
-* Copyright (c) 2000-present Liferay, Inc. All rights reserved.
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 2.1 of the License, or (at your option) any later
-* version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty
-* of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-* the GNU Lesser General Public License for more details.
-*/
+	  %copyright
 	</copyright>
 
-	<license url="http://www.gnu.org/licenses/lgpl-2.1.html">
-	  Liferay IDE Workspace is free software distributed under the terms of the Lesser GNU Public License. See URL for full license text.  http://www.gnu.org/licenses/lgpl-2.1.html
+	<license url="%licenseUrl">
+	  %license
 	</license>
 
 	<requires>
-		<import feature="org.eclipse.sapphire" match="compatible" version="9.1.0" />
-		<import feature="org.eclipse.sapphire.modeling.xml" match="compatible" version="9.1.0" />
-		<import feature="org.eclipse.sapphire.ui" match="compatible" version="9.1.0" />
-		<import feature="org.eclipse.sapphire.ui.swt.xml.editor" match="compatible" version="9.1.0" />
+		<import feature="org.eclipse.sapphire" match="greaterOrEqual" version="9.1.1.201712191343" />
+		<import feature="org.eclipse.sapphire.java" match="greaterOrEqual" version="9.1.1.201712191343" />
+		<import feature="org.eclipse.sapphire.java.jdt" match="greaterOrEqual" version="9.1.1.201712191343" />
+		<import feature="org.eclipse.sapphire.modeling.xml" match="greaterOrEqual" version="9.1.1.201712191343" />
+		<import feature="org.eclipse.sapphire.osgi" match="greaterOrEqual" version="9.1.1.201712191343" />
+		<import feature="org.eclipse.sapphire.platform" match="greaterOrEqual" version="9.1.1.201712191343" />
+		<import feature="org.eclipse.sapphire.ui" match="greaterOrEqual" version="9.1.1.201712191343" />
+		<import feature="org.eclipse.sapphire.ui.swt.gef" match="greaterOrEqual" version="9.1.1.201712191343" />
+		<import feature="org.eclipse.sapphire.ui.swt.xml.editor" match="greaterOrEqual" version="9.1.1.201712191343" />
+		<import plugin="org.eclipse.jst.j2ee.core" />
+		<import plugin="org.eclipse.jst.j2ee" />
+		<import plugin="org.eclipse.jst.jsp.core" />
+		<import plugin="org.eclipse.jst.jsp.ui" />
 	</requires>
 
 	<plugin
 		download-size="0"
 		id="com.liferay.ide.workspace.core"
 		install-size="0"
+		unpack="false"
 		version="${version}"
 	/>
 
@@ -50,6 +47,7 @@
 		download-size="0"
 		id="com.liferay.ide.workspace.ui"
 		install-size="0"
+		unpack="false"
 		version="${version}"
 	/>
 
