@@ -1,0 +1,6 @@
+include ':com.liferay.ide.workspace.core'
+include ':com.liferay.ide.workspace.ui'
+include ':com.liferay.ide.workspace.project.ui'
+include ':com.liferay.ide.workspace.site'
+include ':features:com.liferay.ide.workspace.eclipse.tools'
+include ':features:com.liferay.ide.workspace.hidden'

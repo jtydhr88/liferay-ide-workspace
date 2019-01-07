@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde version="3.8"?><target name="Liferay IDE Workspace 2018.12 Target Platform" sequenceNumber="1">
+	<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<locations>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="http://download.eclipse.org/releases/2018-12/201812191000/"/>
+			<unit id="org.eclipse.sdk.feature.group" version="4.10.0.v20181206-1038"/>
+		</location>
+	</locations>
+	<launcherArgs>
+		<vmArgs>-XX:MaxPermSize=256M</vmArgs>
+	</launcherArgs>
+</target>

@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundle.name
+Bundle-SymbolicName: com.liferay.ide.workspace.project.ui;singleton:=true
+Bundle-Version: 3.5.0.qualifier
+Bundle-Activator: com.liferay.ide.workspace.project.ui.ProjectUI
+Bundle-Vendor: %bundle.vendor
+Require-Bundle: org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ com.liferay.ide.workspace.core,
+ com.liferay.ide.workspace.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: com.liferay.ide.workspace.project.ui,
+ com.liferay.ide.workspace.project.ui.action

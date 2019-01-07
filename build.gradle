@@ -1,0 +1,118 @@
+import eclipsebuild.*
+
+import java.util.regex.Pattern
+
+buildscript {
+	dependencies {
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.source.formatter", version: "latest.release"
+	}
+
+	repositories {
+		maven {
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+		}
+		maven {
+			url "https://oss.sonatype.org/content/repositories/snapshots/"
+		}
+	}
+}
+
+apply plugin: "com.liferay.source.formatter"
+apply plugin: BuildDefinitionPlugin
+
+// define version mapping for the 3rd-party dependencies that are not specific to a particular Eclipse version
+def eclipseVersionAgnosticDependencies = []
+
+// target platform definition for all major Eclipse releases between version 4.3 and 4.8
+// the default version is 410 which can be overridden through -Peclipse.version=<version>
+// also the target platforms contain 1) the Eclipse SDK 2) the latest junit 3) SWTBot 2.2.1
+eclipseBuild {
+	defaultEclipseVersion = '410'
+
+	final def swtPluginId = "org.eclipse.swt.${ECLIPSE_WS}.${ECLIPSE_OS}.${ECLIPSE_ARCH}"
+
+	targetPlatform {
+		eclipseVersion = '410'
+		targetDefinition = file('tooling-e410.target')
+		versionMapping = [
+			"$swtPluginId": '3.109.0',
+		] + eclipseVersionAgnosticDependencies
+	}
+
+	scmRepo = "https://github.com/liferay/liferay-ide-workspace"
+}
+
+// read the current version from an external file and add a timestamp suffix if requested by the caller
+ext.baseVersion = file('version.txt').text.trim()
+ext.versionQualifier = getVersionQualifier()
+version = baseVersion + '.' + versionQualifier
+
+// ensure that the assembleTargetPlatform is executed when the gradle.properties file is changed
+project.assembleTargetPlatform.inputs.file file('gradle.properties')
+
+formatSource {
+	maxLineLength = 120
+}
+
+subprojects {
+	// set the calculated version on all projects in the hierarchy
+	version = rootProject.version
+
+	plugins.withType(JavaPlugin) {
+		sourceCompatibility = "1.8"
+		targetCompatibility = "1.8"
+
+		tasks.matching {
+			it instanceof JavaCompile || it instanceof GroovyCompile
+		}.all {
+			// enable all warnings except for different sourceCompatibility and targetCompatibility value
+			options.compilerArgs << '-Xlint:all'
+			options.compilerArgs << '-Xlint:-options'
+			options.fork = true
+		}
+	}
+
+	// configure the repositories where the external dependencies can be found
+	repositories {
+		maven {
+			name = 'mavenized-target-platform'
+			url "${Config.on(project).mavenizedTargetPlatformDir}"
+		}
+
+		maven {
+			url project.hasProperty('mavenMirror') ? mavenMirror : 'https://repo.maven.apache.org/maven2/'
+		}
+	}
+}
+
+tasks.withType(DownloadEclipseSdkTask) {
+	def eclipseMirror = 'http://download.eclipse.org'
+
+	if (project.hasProperty('eclipseMirror')) {
+		eclipseMirror = project.property('eclipseMirror')
+	}
+
+	def eclipseUrl = "${eclipseMirror}/eclipse/downloads/drops4/R-4.10-201812060815/"
+	def os = org.gradle.internal.os.OperatingSystem.current()
+	def arch = System.getProperty("os.arch").contains("64") ? "-x86_64" : ""
+
+	if (os.windows) {
+		downloadUrl = "${eclipseUrl}eclipse-SDK-4.10-win32${arch}.zip"
+	}
+	else if (os.macOsX) {
+		downloadUrl = "${eclipseUrl}eclipse-SDK-4.10-macosx-cocoa${arch}.tar.gz"
+	}
+	else if (os.linux) {
+		downloadUrl = "${eclipseUrl}eclipse-SDK-4.10-linux-gtk${arch}.tar.gz"
+	}
+}
+
+String getVersionQualifier() {
+	return new Date().format('yyyyMMddkkmm', TimeZone.getTimeZone('GMT')) + "-$releaseType"
+}
+
+repositories {
+	maven {
+		url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+	}
+}

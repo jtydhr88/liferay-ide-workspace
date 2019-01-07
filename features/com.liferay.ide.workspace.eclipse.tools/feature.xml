@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+	id="com.liferay.ide.workspace.eclipse.tools"
+	label="Liferay IDE Workspace"
+	plugin="com.liferay.ide.workspace.ui"
+	provider-name="Liferay, Inc."
+	version="${version}"
+>
+
+	<description url="http://www.liferay.com/community/liferay-projects/liferay-ide/overview">
+	  Liferay IDE Workspace is the official set of Eclipse plugins for supporting Liferay Portal development platform.
+	</description>
+
+	<copyright url="http://www.liferay.com/products/liferay-portal/lgpl">
+	  /**
+* Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+*
+* This library is free software; you can redistribute it and/or
+* modify it under the terms of the GNU Lesser General Public
+* License as published by the Free Software Foundation; either
+* version 2.1 of the License, or (at your option) any later
+* version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty
+* of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+* the GNU Lesser General Public License for more details.
+*/
+	</copyright>
+
+	<license url="http://www.gnu.org/licenses/lgpl-2.1.html">
+	  Liferay IDE Workspace is free software distributed under the terms of the Lesser GNU Public License. See URL for full license text.  http://www.gnu.org/licenses/lgpl-2.1.html
+	</license>
+
+	<plugin
+		download-size="0"
+		id="com.liferay.ide.workspace.core"
+		install-size="0"
+		version="${version}"
+	/>
+
+	<plugin
+		download-size="0"
+		id="com.liferay.ide.workspace.ui"
+		install-size="0"
+		version="${version}"
+	/>
+
+	<plugin
+		download-size="0"
+		id="com.liferay.ide.workspace.project.ui"
+		install-size="0"
+		version="${version}"
+	/>
+
+</feature>

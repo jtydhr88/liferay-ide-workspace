@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<feature id="com.liferay.ide.workspace.eclipse.tools" version="0.0.0">
+		<category name="liferay-ide-workspace" />
+	</feature>
+	<category-def label="Liferay IDE Workspace" name="liferay-ide-workspace">
+		<description>
+			Liferay IDE Workspace is the official set of Eclipse plug-ins supporting development for the Liferay Portal application platform.
+		</description>
+	</category-def>
+</site>

@@ -1,0 +1,14 @@
+apply plugin: eclipsebuild.UpdateSitePlugin
+
+dependencies {
+	localFeature project(":features:com.liferay.ide.workspace.eclipse.tools")
+	localFeature project(":features:com.liferay.ide.workspace.hidden")
+
+	localPlugin project(":com.liferay.ide.workspace.core")
+	localPlugin project(":com.liferay.ide.workspace.project.ui")
+	localPlugin project(":com.liferay.ide.workspace.ui")
+}
+
+updateSite {
+	extraResources = files('p2.index')
+}
